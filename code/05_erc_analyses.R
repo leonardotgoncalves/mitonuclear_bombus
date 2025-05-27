@@ -1150,6 +1150,29 @@ summary(manova, test = "Pillai")
 # Analyzing univariate results
 summary(model)
 
+# Comparing species at the extremes
+# Sort dataframe by PC1
+test_by_group <- as.data.frame(mlm.pic)
+test_by_group <- test_by_group[order(test_by_group$PC1.pic), ]
+
+# Calculate 33% of samples
+n_33 <- floor(42 * 0.33)
+
+# Assign group labels (coldest 33% = "cold", hottest 33% = "hot")
+test_by_group$group <- NA
+test_by_group$group[1:n_33] <- "cold"
+test_by_group$group[(42 - n_33 + 1):42] <- "hot"
+
+# Subset to only include cold and hot species
+df_extremes <- subset(test_by_group, group %in% c("cold", "hot"))
+
+# Compare evolutionary rates
+wilcox.test(mt.pic ~ group, data = df_extremes)
+wilcox.test(nmt.pic ~ group, data = df_extremes)
+wilcox.test(mt.nmt.rate.pic ~ group, data = df_extremes)
+wilcox.test(mt.rand.rate.pic ~ group, data = df_extremes)
+wilcox.test(nmt.rand.rate.pic ~ group, data = df_extremes)
+
 # Convert data into long format for ggplot
 data_long <- as.data.frame(mlm.pic) %>%
   select(PC1.pic, PC2.pic, mt.pic, nmt.pic, mt.nmt.rate.pic, mt.rand.rate.pic, nmt.rand.rate.pic) %>%
