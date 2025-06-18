@@ -34,7 +34,7 @@ TMPDIR=./
 
 # Align and sort
 bwa mem -M -t ${SLURM_NTASKS} ./ref/${FASTA} ${R1} ${R2} | \
-  samtools sort @ ${SLURM_NTASKS} -O BAM -T ${TMPDIR} -o ${R1%_1P.fastq.gz}_sorted.bam
+  samtools sort -@ ${SLURM_NTASKS} -O BAM -T ${TMPDIR} -o ${R1%_1P.fastq.gz}_sorted.bam
 
 done
 
