@@ -82,7 +82,7 @@ mean_depth=$(samtools depth -a "${i}" | awk '{c++;s+=$3}END{if (c>0) print s/c; 
 # Breadth of coverage
 breadth=$(samtools depth -a "${i}" | awk '{c++; if($3>0) total+=1}END{if (c>0) print (total/c)*100; else print 0}')
 
-echo "${i},${mean_depth},{$breadth}"
+echo "${i},${mean_depth},${breadth}"
 
 done
 
